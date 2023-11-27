@@ -130,7 +130,7 @@ let app = {
     void main() {
       vec2 st = gl_FragCoord.xy/u_resolution.xy;
 
-      gl_FragColor = vec4(vec3(0.0, st),1.0);
+      gl_FragColor = vec4(vec3(0.0, st),0.4);
     }
     `;
   },
@@ -159,9 +159,7 @@ let app = {
     scene.add(this.mesh);
 
     // set appropriate positioning
-    // this.mesh.position.set(-0.1, 0.4, 0);
     this.mesh.rotation.x = 3.1415 / -3;
-    // this.mesh.rotation.y = 3.1415 / 2;
     this.mesh.rotation.z = 3.1415 / 3;
 
     // GUI controls
@@ -177,14 +175,24 @@ let app = {
     // Stats - show fps
     this.stats1 = new Stats();
     this.stats1.showPanel(0); // Panel 0 = fps
-    this.stats1.domElement.style.cssText =
-      "position:absolute;top:0px;left:0px;";
-    // this.container is the parent DOM element of the threejs canvas element
-    this.container.appendChild(this.stats1.domElement);
+    // this.stats1.domElement.style.cssText =
+    //   "position:absolute;top:0px;left:0px;";
+    // // this.container is the parent DOM element of the threejs canvas element
+    // this.container.appendChild(this.stats1.domElement);
 
+    // Clock
     clockTimeElement = document.getElementById("clockTime");
-    clockTimeElement.style.cssText =
-    "position:absolute;top:0px;left:100px;color:white;";
+    clockTimeElement.style.cssText = `
+    position: absolute;
+    top: 8%;
+    left: 8%;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Chivo Mono', monospace;
+    font-size: 60px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+  `;
     this.container.appendChild(clockTimeElement);
   },
 
