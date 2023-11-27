@@ -43,7 +43,7 @@ let renderer = createRenderer({ antialias: true });
 
 // Create the camera
 // Pass in fov, near, far and camera position respectively
-let camera = createCamera(60, 1, 100, { x: 0, y: 0, z: 4.5 });
+let camera = createCamera(45, 1, 100, { x: 0, y: 0, z: 4.5 });
 
 /**************************************************
  * 2. Build your scene in this threejs app
@@ -138,7 +138,7 @@ let app = {
     // OrbitControls
     this.controls = new OrbitControls(camera, renderer.domElement);
     this.controls.enableDamping = true;
-    this.controls.autoRotate = true;
+    this.controls.autoRotate = false;
     this.controls.autoRotateSpeed = 2.0;
 
     // Environment
@@ -151,14 +151,18 @@ let app = {
       vertexShader: this.vertexShader(),
       fragmentShader: this.fragmentShader()
     });
+    // Time
+    this.time = {hours: {value: 0.0}, minutes: {value: 0.0}, seconds: {value: 0.0}};
+
     // const material = new THREE.MeshStandardMaterial();
     this.mesh = new THREE.Points(this.geometry, material);
     scene.add(this.mesh);
 
     // set appropriate positioning
     // this.mesh.position.set(-0.1, 0.4, 0);
-    this.mesh.rotation.x = 3.1415 / 2;
-    this.mesh.rotation.y = 3.1415 / 4;
+    this.mesh.rotation.x = 3.1415 / -3;
+    // this.mesh.rotation.y = 3.1415 / 2;
+    this.mesh.rotation.z = 3.1415 / 3;
 
     // GUI controls
     const gui = new dat.GUI();
@@ -170,46 +174,6 @@ let app = {
         uniforms.u_pointsize.value = val;
       });
 
-    let wave1 = gui.addFolder("Wave 1");
-    wave1
-      .add(uniforms.u_noise_freq_1, "value", 0.1, 3, 0.1)
-      .name("Frequency")
-      .onChange((val) => {
-        uniforms.u_noise_freq_1.value = val;
-      });
-    wave1
-      .add(uniforms.u_noise_amp_1, "value", 0.1, 3, 0.1)
-      .name("Amplitude")
-      .onChange((val) => {
-        uniforms.u_noise_amp_1.value = val;
-      });
-    wave1
-      .add(uniforms.u_spd_modifier_1, "value", 0.01, 2.0, 0.01)
-      .name("Speed")
-      .onChange((val) => {
-        uniforms.u_spd_modifier_1.value = val;
-      });
-
-    let wave2 = gui.addFolder("Wave 2");
-    wave2
-      .add(uniforms.u_noise_freq_2, "value", 0.1, 3, 0.1)
-      .name("Frequency")
-      .onChange((val) => {
-        uniforms.u_noise_freq_2.value = val;
-      });
-    wave2
-      .add(uniforms.u_noise_amp_2, "value", 0.1, 3, 0.1)
-      .name("Amplitude")
-      .onChange((val) => {
-        uniforms.u_noise_amp_2.value = val;
-      });
-    wave2
-      .add(uniforms.u_spd_modifier_2, "value", 0.01, 2.0, 0.01)
-      .name("Speed")
-      .onChange((val) => {
-        uniforms.u_spd_modifier_2.value = val;
-      });
-
     // Stats - show fps
     this.stats1 = new Stats();
     this.stats1.showPanel(0); // Panel 0 = fps
@@ -217,12 +181,52 @@ let app = {
       "position:absolute;top:0px;left:0px;";
     // this.container is the parent DOM element of the threejs canvas element
     this.container.appendChild(this.stats1.domElement);
+
+    clockTimeElement = document.getElementById("clockTime");
+    clockTimeElement.style.cssText =
+    "position:absolute;top:0px;left:100px;color:white;";
+    this.container.appendChild(clockTimeElement);
+  },
+
+  // @param {number} hours - 12-hour format
+  // @param {number} minutes - 0-59
+  // @param {number} seconds - 0-59
+  formatTime(hours, minutes, seconds) {
+    // set to two digits
+    minutes = minutes.toString().padStart(2, "0");
+    seconds = seconds.toString().padStart(2, "0");
+    return `${hours}:${minutes}:${seconds}`;
   },
   // @param {number} interval - time elapsed between 2 frames
   // @param {number} elapsed - total time elapsed since app start
   updateScene(interval, elapsed) {
     this.controls.update();
     this.stats1.update();
+
+     // Get the current time
+    const date = new Date();
+    const milliseconds = date.getMilliseconds();
+    const seconds = date.getSeconds();
+    const minutes = date.getMinutes();
+    const hours = date.getHours() % 12;
+
+    const MIDNIGHT = Math.PI * -0.5;
+    hourRotation = MIDNIGHT - Math.PI * 2 * (hours + minutes / 60) / 12;
+    minuteRotation = MIDNIGHT - Math.PI * 2 * (minutes + seconds / 60) / 60;
+    secondRotation = MIDNIGHT - Math.PI * 2 * (seconds + milliseconds / 1000) / 60;
+
+    // Show time
+    clockTimeElement.textContent = this.formatTime(hours, minutes, seconds);
+
+    // Modify the amplitude, frequency, and speed based on time
+    uniforms.u_noise_amp_1.value = 0.1 + Math.sin(secondRotation) * 0.5; // Amplitude based on seconds
+    uniforms.u_noise_amp_2.value = 0.1 + Math.cos(secondRotation) * 0.5; // Amplitude based on seconds
+
+    uniforms.u_noise_freq_1.value = 0.1 + Math.sin(minuteRotation) * 2.75; // Frequency based on minutes
+    uniforms.u_noise_freq_2.value = 0.1 + Math.cos(minuteRotation) * 2.75; // Frequency based on minutes
+
+    uniforms.u_spd_modifier_1.value = 0.01 + Math.sin(hourRotation) * 1.5; // Speed based on hours
+    uniforms.u_spd_modifier_2.value = 0.01 + Math.cos(hourRotation) * 1.5; // Speed based on hours
   }
 };
 
