@@ -3,6 +3,7 @@ import * as THREE from "three";
 import * as dat from "dat.gui";
 import Stats from "three/examples/jsm/libs/stats.module";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { Color } from "three";
 
 // Core boilerplate code deps
 import {
@@ -19,15 +20,16 @@ global.THREE = THREE;
  *************************************************/
 const uniforms = {
   ...getDefaultUniforms(),
-  u_pointsize: { value: 2.0 },
+  u_pointsize: { value: 2.5 },
   // wave 1
-  u_noise_freq_1: { value: 3.0 },
-  u_noise_amp_1: { value: 0.2 },
+  u_noise_freq_1: { value: 1.0 },
+  u_noise_amp_1: { value: 1.0 },
   u_spd_modifier_1: { value: 1.0 },
   // wave 2
-  u_noise_freq_2: { value: 2.0 },
-  u_noise_amp_2: { value: 0.3 },
-  u_spd_modifier_2: { value: 0.8 }
+  u_noise_freq_2: { value: 1.0 },
+  u_noise_amp_2: { value: 1.0 },
+  u_spd_modifier_2: { value: 1.0 },
+  u_wave_color: { value: new Color(120,140,50) }
 };
 
 /**************************************************
@@ -126,11 +128,13 @@ let app = {
     #define TWO_PI 6.28318530718
     
     uniform vec2 u_resolution;
+    uniform vec3 u_wave_color; // Added uniform for wave color
 
     void main() {
       vec2 st = gl_FragCoord.xy/u_resolution.xy;
-
-      gl_FragColor = vec4(vec3(0.0, st),0.4);
+      vec3 normalizedColor = u_wave_color / 255.0;
+      gl_FragColor = vec4(normalizedColor * vec3(st, 1.0 - st.y), 0.7
+      );
     }
     `;
   },
@@ -164,35 +168,37 @@ let app = {
 
     // GUI controls
     const gui = new dat.GUI();
+    gui.domElement.classList.add("dg"); // Add class to GUI container
 
+    gui.addColor(uniforms.u_wave_color, "value").name("Color");
     gui
-      .add(uniforms.u_pointsize, "value", 1.0, 10.0, 0.5)
-      .name("Point Size")
+      .add(uniforms.u_pointsize, "value", 1.0, 5.0, 0.5)
+      .name("Density")
       .onChange((val) => {
         uniforms.u_pointsize.value = val;
       });
+    // Create a button to toggle the visibility of the GUI
+    const toggleGuiButton = document.createElement('button');
+    toggleGuiButton.classList.add('toggle-gui-button');
+    toggleGuiButton.innerHTML = 'x';
 
+    let isGuiVisible = false;
+
+    toggleGuiButton.addEventListener('click', () => {
+      isGuiVisible = !isGuiVisible;
+      toggleGuiButton.innerHTML = isGuiVisible ? 'x' : '+';
+      gui.domElement.style.display = isGuiVisible ? 'block' : 'none';
+    });
+    gui.domElement.querySelector('.close-button').style.display = 'none';
+
+    // Append the button to the HTML body
+    this.container.appendChild(toggleGuiButton);
+    
     // Stats - show fps
     this.stats1 = new Stats();
-    this.stats1.showPanel(0); // Panel 0 = fps
-    // this.stats1.domElement.style.cssText =
-    //   "position:absolute;top:0px;left:0px;";
-    // // this.container is the parent DOM element of the threejs canvas element
-    // this.container.appendChild(this.stats1.domElement);
 
     // Clock
     clockTimeElement = document.getElementById("clockTime");
-    clockTimeElement.style.cssText = `
-    position: absolute;
-    top: 8%;
-    left: 8%;
-    color: rgba(255, 255, 255, 0.7);
-    font-family: 'Chivo Mono', monospace;
-    font-size: 60px;
-    padding: 15px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-  `;
     this.container.appendChild(clockTimeElement);
   },
 
