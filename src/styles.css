@@ -28,7 +28,7 @@ body {
     position: absolute;
     top: 85px;
     left: 390px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.5);
     font-family: 'Chivo Mono', monospace;
     font-size: 20px;
 }
