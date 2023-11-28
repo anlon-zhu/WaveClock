@@ -278,14 +278,14 @@ let app = {
     clockSeconds.textContent = seconds.toString().padStart(2, "0");
 
     // Modify the amplitude, frequency, and speed based on time
-    uniforms.u_noise_amp_1.value = 0.1 + Math.sin(secondRotation) * 0.5; // Amplitude based on seconds
-    uniforms.u_noise_amp_2.value = 0.1 + Math.cos(secondRotation) * 0.5; // Amplitude based on seconds
+    uniforms.u_noise_amp_1.value = 0.1 + Math.abs(Math.sin(secondRotation)) * 0.5; // Amplitude based on seconds
+    uniforms.u_noise_amp_2.value = 0.1 + Math.abs(Math.cos(secondRotation)) * 0.5; // Amplitude based on seconds
 
-    uniforms.u_noise_freq_1.value = 0.1 + Math.sin(minuteRotation) * 2.75; // Frequency based on minutes
-    uniforms.u_noise_freq_2.value = 0.1 + Math.cos(minuteRotation) * 2.75; // Frequency based on minutes
+    uniforms.u_noise_freq_1.value = 0.1 + Math.abs(Math.sin(minuteRotation)) * 2.75; // Frequency based on minutes
+    uniforms.u_noise_freq_2.value = 0.1 + Math.abs(Math.cos(minuteRotation)) * 2.75; // Frequency based on minutes
 
-    uniforms.u_spd_modifier_1.value = 0.01 + Math.sin(hourRotation) * 1.5; // Speed based on hours
-    uniforms.u_spd_modifier_2.value = 0.01 + Math.cos(hourRotation) * 1.5; // Speed based on hours
+    uniforms.u_spd_modifier_1.value = 0.01 + Math.abs(Math.sin(hourRotation)) * 1.5; // Speed based on hours
+    uniforms.u_spd_modifier_2.value = 0.01 + Math.abs(Math.cos(hourRotation)) * 1.5; // Speed based on hours
   }
 };
 
