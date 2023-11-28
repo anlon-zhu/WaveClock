@@ -227,9 +227,9 @@ let app = {
     const hours = date.getHours() % 12;
 
     const MIDNIGHT = Math.PI * -0.5;
-    hourRotation = MIDNIGHT - Math.PI * 2 * (hours + minutes / 60) / 12;
-    minuteRotation = MIDNIGHT - Math.PI * 2 * (minutes + seconds / 60) / 60;
-    secondRotation = MIDNIGHT - Math.PI * 2 * (seconds + milliseconds / 1000) / 60;
+    let hourRotation = MIDNIGHT - Math.PI * 2 * (hours + minutes / 60) / 12;
+    let minuteRotation = MIDNIGHT - Math.PI * 2 * (minutes + seconds / 60) / 60;
+    let secondRotation = MIDNIGHT - Math.PI * 2 * (seconds + milliseconds / 1000) / 60;
 
     // Show time
     const clockTimeElement = document.querySelector(".clockTime");
