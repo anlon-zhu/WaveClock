@@ -262,7 +262,7 @@ let app = {
     const hours = date.getHours() % 12;
     const ampm = date.getHours() >= 12 ? "PM" : "AM";
 
-    const MIDNIGHT = Math.PI * -0.5;
+    const MIDNIGHT = Math.PI * 0.5;
     let hourRotation = MIDNIGHT - Math.PI * 2 * (hours + minutes / 60) / 12;
     let minuteRotation = MIDNIGHT - Math.PI * 2 * (minutes + seconds / 60) / 60;
     let secondRotation = MIDNIGHT - Math.PI * 2 * (seconds + milliseconds / 1000) / 60;
