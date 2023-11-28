@@ -177,10 +177,11 @@ let app = {
       .onChange((val) => {
         uniforms.u_pointsize.value = val;
       });
+
     // Create a button to toggle the visibility of the GUI
     const toggleGuiButton = document.createElement('button');
     toggleGuiButton.classList.add('toggle-gui-button');
-    toggleGuiButton.innerHTML = 'x';
+    toggleGuiButton.innerHTML = '+';
 
     let isGuiVisible = false;
 
@@ -190,9 +191,36 @@ let app = {
       gui.domElement.style.display = isGuiVisible ? 'block' : 'none';
     });
     gui.domElement.querySelector('.close-button').style.display = 'none';
-
     // Append the button to the HTML body
     this.container.appendChild(toggleGuiButton);
+
+    // Create a toggleable about section
+    const aboutSection = document.createElement('div');
+    aboutSection.classList.add('about-section');
+    aboutSection.innerHTML = `
+      <h1>About Wave Clock</h1>
+      <p>Created by Anlon Zhu @ Princeton VIS218 </p>
+      <p>'Wave Clock' is representation of time using a wave generated from noise particles. The speed, frequency, and amplitude of the waves are based on the current time's hours, minutes, and seconds, respectively.</p>
+      <p>Created using Three.js and WebGL, based on wave noise work by <a href="https://github.com/franky-adl">franky-adl</a></p>
+      `
+    this.container.appendChild(aboutSection);
+
+    // Toggle button for the about section
+    const toggleAboutButton = document.createElement('button');
+    toggleAboutButton.classList.add('toggle-about-button');
+    toggleAboutButton.innerHTML = '?';
+
+    let isAboutVisible = false;
+
+    toggleAboutButton.addEventListener('click', () => {
+      isAboutVisible = !isAboutVisible;
+      toggleAboutButton.innerHTML = isAboutVisible ? 'x' : '?';
+      // .style.display = isAboutVisible ? 'block' : 'none';
+      aboutSection.style.display = isAboutVisible ? 'block' : 'none';
+    });
+
+    // Append the button to the HTML body
+    this.container.appendChild(toggleAboutButton);
     
     // Stats - show fps
     this.stats1 = new Stats();
