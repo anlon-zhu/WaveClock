@@ -12,7 +12,7 @@ body {
     display: block;
 }
 
-#clockTime {
+.clockTime {
     position: absolute;
     top: 8%;
     left: 8%;

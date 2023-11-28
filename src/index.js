@@ -198,7 +198,9 @@ let app = {
     this.stats1 = new Stats();
 
     // Clock
-    clockTimeElement = document.getElementById("clockTime");
+    const clockTimeElement = document.createElement("clockTime");
+    clockTimeElement.classList.add("clockTime");
+    clockTimeElement.textContent = "00:00:00";
     this.container.appendChild(clockTimeElement);
   },
 
@@ -230,6 +232,7 @@ let app = {
     secondRotation = MIDNIGHT - Math.PI * 2 * (seconds + milliseconds / 1000) / 60;
 
     // Show time
+    const clockTimeElement = document.querySelector(".clockTime");
     clockTimeElement.textContent = this.formatTime(hours, minutes, seconds);
 
     // Modify the amplitude, frequency, and speed based on time
