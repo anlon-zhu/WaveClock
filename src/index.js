@@ -246,6 +246,9 @@ let app = {
     // set to two digits
     minutes = minutes.toString().padStart(2, "0");
     seconds = seconds.toString().padStart(2, "0");
+    if (hours === 0) {
+      hours = 12;
+    }
     return `${hours}:${minutes} ${ampm}`;
   },
   // @param {number} interval - time elapsed between 2 frames
