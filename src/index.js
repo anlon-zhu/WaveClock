@@ -201,6 +201,7 @@ let app = {
       <h1>About Wave Clock</h1>
       <p>Created by Anlon Zhu @ Princeton VIS218 </p>
       <p>'Wave Clock' is representation of time using a wave generated from noise particles. The speed, frequency, and amplitude of the waves are based on the current time's hours, minutes, and seconds, respectively.</p>
+      <p>Note: Requires hardware acceleration enabled on Google Chrome.</p>
       <p>Created using Three.js and WebGL, based on wave noise work by <a href="https://github.com/franky-adl">franky-adl</a></p>
       `
     this.container.appendChild(aboutSection);
