@@ -230,16 +230,22 @@ let app = {
     clockTimeElement.classList.add("clockTime");
     clockTimeElement.textContent = "00:00:00";
     this.container.appendChild(clockTimeElement);
+
+    const clockSeconds = document.createElement("clockSeconds");
+    clockSeconds.classList.add("clockSeconds");
+    clockSeconds.textContent = "00";
+    this.container.appendChild(clockSeconds);
   },
 
   // @param {number} hours - 12-hour format
   // @param {number} minutes - 0-59
   // @param {number} seconds - 0-59
-  formatTime(hours, minutes, seconds) {
+  // @param {string} ampm - AM or PM
+  formatTime(hours, minutes, seconds, ampm) {
     // set to two digits
     minutes = minutes.toString().padStart(2, "0");
     seconds = seconds.toString().padStart(2, "0");
-    return `${hours}:${minutes}:${seconds}`;
+    return `${hours}:${minutes} ${ampm}`;
   },
   // @param {number} interval - time elapsed between 2 frames
   // @param {number} elapsed - total time elapsed since app start
@@ -253,6 +259,7 @@ let app = {
     const seconds = date.getSeconds();
     const minutes = date.getMinutes();
     const hours = date.getHours() % 12;
+    const ampm = date.getHours() >= 12 ? "PM" : "AM";
 
     const MIDNIGHT = Math.PI * -0.5;
     let hourRotation = MIDNIGHT - Math.PI * 2 * (hours + minutes / 60) / 12;
@@ -261,7 +268,10 @@ let app = {
 
     // Show time
     const clockTimeElement = document.querySelector(".clockTime");
-    clockTimeElement.textContent = this.formatTime(hours, minutes, seconds);
+    clockTimeElement.textContent = this.formatTime(hours, minutes, seconds, ampm);
+
+    const clockSeconds = document.querySelector(".clockSeconds");
+    clockSeconds.textContent = seconds.toString().padStart(2, "0");
 
     // Modify the amplitude, frequency, and speed based on time
     uniforms.u_noise_amp_1.value = 0.1 + Math.sin(secondRotation) * 0.5; // Amplitude based on seconds

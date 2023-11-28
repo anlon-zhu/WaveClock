@@ -14,15 +14,25 @@ body {
 
 .clockTime {
     position: absolute;
-    top: 8%;
-    left: 8%;
+    top: 70px;
+    left: 75px;
     color: rgba(255, 255, 255, 0.7);
     font-family: 'Chivo Mono', monospace;
     font-size: 60px;
     padding: 15px;
-    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 15px;
 }
+
+
+.clockSeconds {
+    position: absolute;
+    top: 85px;
+    left: 390px;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Chivo Mono', monospace;
+    font-size: 20px;
+}
+
 
 #veil {
     position: absolute;
