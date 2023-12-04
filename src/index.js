@@ -265,10 +265,15 @@ let app = {
     const hours = date.getHours() % 12;
     const ampm = date.getHours() >= 12 ? "PM" : "AM";
 
+    // Fractional time for gradual shift
+    const fractionalSeconds = seconds + milliseconds / 1000;
+    const fractionalMinutes = minutes + fractionalSeconds / 60;
+    const fractionalHours = hours + fractionalMinutes / 60;
+
     const MIDNIGHT = Math.PI * 0.5;
-    let hourRotation = MIDNIGHT - Math.PI * 2 * (hours + minutes / 60) / 12;
-    let minuteRotation = MIDNIGHT - Math.PI * 2 * (minutes + seconds / 60) / 60;
-    let secondRotation = MIDNIGHT - Math.PI * 2 * (seconds + milliseconds / 1000) / 60;
+    let hourRotation = MIDNIGHT - Math.PI * 2 * (fractionalHours) / 12;
+    let minuteRotation = MIDNIGHT - Math.PI * 2 * (fractionalMinutes) / 60;
+    let secondRotation = MIDNIGHT - Math.PI * 2 * (fractionalSeconds) / 60;
 
     // Show time
     const clockTimeElement = document.querySelector(".clockTime");
@@ -279,13 +284,13 @@ let app = {
 
     // Modify the amplitude, frequency, and speed based on time
     uniforms.u_noise_amp_1.value = 0.1 + Math.abs(Math.sin(secondRotation)) * 0.4; // Amplitude based on seconds
-    uniforms.u_noise_amp_2.value = 0.1 + Math.abs(Math.cos(secondRotation)) * 0.4; // Amplitude based on seconds
+    uniforms.u_noise_amp_2.value = 0.1 + Math.abs(Math.sin(secondRotation)) * 0.4; // Amplitude based on seconds
 
     uniforms.u_noise_freq_1.value = 0.1 + Math.abs(Math.sin(minuteRotation)) * 2.5; // Frequency based on minutes
-    uniforms.u_noise_freq_2.value = 0.1 + Math.abs(Math.cos(minuteRotation)) * 2.5; // Frequency based on minutes
+    uniforms.u_noise_freq_2.value = 0.1 + Math.abs(Math.sin(minuteRotation)) * 2.5; // Frequency based on minutes
 
     uniforms.u_spd_modifier_1.value = 0.01 + Math.abs(Math.sin(hourRotation)) * 1.5; // Speed based on hours
-    uniforms.u_spd_modifier_2.value = 0.01 + Math.abs(Math.cos(hourRotation)) * 1.5; // Speed based on hours
+    uniforms.u_spd_modifier_2.value = 0.01 + Math.abs(Math.sin(hourRotation)) * 1.5; // Speed based on hours
   }
 };
 
