@@ -129,3 +129,17 @@ body {
     font-size: 12px;
     cursor: pointer;
 }
+
+.toggle-time-button {
+    position: absolute;
+    top: 10px;
+    right: 105px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid #555;
+    border-radius: 15px;
+    padding: 5px 10px 5px 10px;
+    color: #fff;
+    font-family: 'Chivo Mono', monospace;
+    font-size: 12px;
+    cursor: pointer;
+}

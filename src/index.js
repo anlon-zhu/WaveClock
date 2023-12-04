@@ -223,7 +223,6 @@ let app = {
     // Append the button to the HTML body
     this.container.appendChild(toggleAboutButton);
     
-    // Stats - show fps
     this.stats1 = new Stats();
 
     // Clock
@@ -236,6 +235,24 @@ let app = {
     clockSeconds.classList.add("clockSeconds");
     clockSeconds.textContent = "00";
     this.container.appendChild(clockSeconds);
+
+    // Toggle button for the about section
+    const toggleTimeButton = document.createElement('button');
+    toggleTimeButton.classList.add('toggle-time-button');
+    toggleTimeButton.innerHTML = '<i class="fas fa-clock"></i>';
+
+    let isTimeVisible = true;
+
+    toggleTimeButton.addEventListener('click', () => {
+      isTimeVisible = !isTimeVisible;
+      toggleTimeButton.innerHTML = isTimeVisible ? '<i class="fas fa-clock"></i>' : '<i class="far fa-clock"></i>';
+      clockTimeElement.style.display = isTimeVisible ? 'block' : 'none';
+      clockSeconds.style.display = isTimeVisible ? 'block' : 'none';
+    });
+
+    // Append the button to the HTML body
+    this.container.appendChild(toggleTimeButton);
+    
   },
 
   // @param {number} hours - 12-hour format
