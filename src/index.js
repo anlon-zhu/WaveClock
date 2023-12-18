@@ -303,8 +303,8 @@ let app = {
     uniforms.u_noise_amp_1.value = 0.1 + Math.abs(Math.sin(secondRotation)) * 0.4; // Amplitude based on seconds
     uniforms.u_noise_amp_2.value = 0.1 + Math.abs(Math.sin(secondRotation)) * 0.4; // Amplitude based on seconds
 
-    uniforms.u_noise_freq_1.value = 0.1 + Math.abs(Math.sin(minuteRotation)) * 2.5; // Frequency based on minutes
-    uniforms.u_noise_freq_2.value = 0.1 + Math.abs(Math.sin(minuteRotation)) * 2.5; // Frequency based on minutes
+    uniforms.u_noise_freq_1.value = 0.25 + Math.abs(Math.sin(minuteRotation)) * 2.5; // Frequency based on minutes
+    uniforms.u_noise_freq_2.value = 0.25 + Math.abs(Math.sin(minuteRotation)) * 2.5; // Frequency based on minutes
 
     uniforms.u_spd_modifier_1.value = 0.3 + Math.abs(Math.sin(hourRotation)) * 1.5; // Speed based on hours
     uniforms.u_spd_modifier_2.value = 0.3 + Math.abs(Math.sin(hourRotation)) * 1.5; // Speed based on hours
